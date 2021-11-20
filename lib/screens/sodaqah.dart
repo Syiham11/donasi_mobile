@@ -15,11 +15,8 @@ class Post {
   final int id;
   final String title;
   final String body;
- final jumlah;
- final penerima;
- final notlp;
-
-  Post({this.userId, this.id, this.title, this.body, this.penerima, this.jumlah, this.notlp});
+ 
+  Post({this.userId, this.id, this.title, this.body});
  
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
@@ -27,9 +24,6 @@ class Post {
       id: json['id'],
       title: json['title'],
       body: json['body'],
-      penerima: json['penerima'],
-      jumlah: json['jumlah'],
-      notlp: json['notlp'],
     );
   }
  
@@ -38,9 +32,6 @@ class Post {
     map["userId"] = userId;
     map["title"] = title;
     map["body"] = body;
-    map["penerima"] = penerima;
-    map["jumlah"] = jumlah;
-    map["notlp"] = notlp;
  
     return map;
   }
@@ -63,9 +54,6 @@ class Sodaqah extends StatelessWidget {
   static final CREATE_POST_URL = 'https://ori.iumrah.co.id/api/mobile/cek_jamaah/index.php';
   TextEditingController titleControler = new TextEditingController();
   TextEditingController bodyControler = new TextEditingController();
-  TextEditingController jumlahControler = new TextEditingController();
-  TextEditingController penerimaControler = new TextEditingController();
-  TextEditingController notlpControler = new TextEditingController();
  
  
 
@@ -138,7 +126,7 @@ class Sodaqah extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.0),
         ),
         TextFormField(
-           controller: penerimaControler,
+           controller: titleControler,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             enabledBorder: UnderlineInputBorder(
@@ -149,21 +137,21 @@ class Sodaqah extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "Pilih Penerima Sodaqah",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           autofocus: false,
         ),
         Padding(
           padding: EdgeInsets.only(top: 10.0),
         ),
         TextFormField(
-           controller: jumlahControler,
+           controller: titleControler,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             enabledBorder: UnderlineInputBorder(
@@ -174,14 +162,14 @@ class Sodaqah extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "Jumlah Sodaqah",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           autofocus: false,
         ),
         
@@ -200,14 +188,14 @@ class Sodaqah extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "Nama Pemberi Sodaqah",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           // obscureText: true,
           autofocus: false,
         ),
@@ -215,7 +203,7 @@ class Sodaqah extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.0),
         ),
         TextFormField(
-           controller: titleControler,
+           controller: bodyControler,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             enabledBorder: UnderlineInputBorder(
@@ -226,14 +214,14 @@ class Sodaqah extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "Email Pemberi Sodaqah",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           // obscureText: true,
           autofocus: false,
         ),
@@ -241,7 +229,7 @@ class Sodaqah extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.0),
         ),
         TextFormField(
-           controller: notlpControler,
+           controller: bodyControler,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             enabledBorder: UnderlineInputBorder(
@@ -252,14 +240,14 @@ class Sodaqah extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "No.Telepon Pemberi Sodaqah",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           // obscureText: true,
           autofocus: false,
         ),

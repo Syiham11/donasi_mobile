@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:donasi_mobile/screens/constants.dart';
-  const kPrimaryColor = Color(0xFF4CAF50);
-  const kPrimaryLightColor = Color(0xFFC8E6C9);
+  const kPrimaryColor = Color(0xFF6F35A5);
+  const kPrimaryLightColor = Color(0xFFF1E6FF);
   
 class RoundedButton extends StatelessWidget {
   final String text;

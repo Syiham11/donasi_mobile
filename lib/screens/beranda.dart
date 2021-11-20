@@ -1,33 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart' hide Router;
+ import 'package:flutter/services.dart';
 import 'package:donasi_mobile/Model/categoryModel.dart';
 import 'package:donasi_mobile/Model/productModel.dart';
 import 'package:donasi_mobile/screens/custom_shape.dart';
-import 'package:donasi_mobile/screens/mainui_customcard.dart';
-import 'package:donasi_mobile/screens/choose.dart';
+// import 'package:donasi_mobile/screens/mainui_customcard.dart';
+ import 'package:donasi_mobile/screens/choose.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:carousel_pro/carousel_pro.dart';
-import '../screens/details.dart';
+// import '../screens/details.dart';
 import 'package:donasi_mobile/widgets/vertical_place_beranda.dart';
-// import 'package:donasi_mobile/screens/masuk.dart';
-import 'package:donasi_mobile/views/login.dart';
-import 'package:donasi_mobile/main_v2.dart';
-// import 'package:donasi_mobile/views/prof.dart';
-
+import 'package:donasi_mobile/screens/masuk.dart';
+import 'package:donasi_mobile/screens/views/login.dart';
 
 class Beranda extends StatefulWidget {
   @override
   _Beranda createState() => _Beranda();
- 
- 
-    
 }
 
-class _Beranda extends State<Beranda>{
+class _Beranda extends State<Beranda> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
-
 
   bool isExpanded = false;
   List<Category> categoryItems;
@@ -36,36 +29,36 @@ class _Beranda extends State<Beranda>{
   List<Product> dealsListItems;
   double _height;
   double _width;
-  
-      List places;
-      List laporan;
-Future<String> getData() async {
+
+  List places;
+  List laporan;
+  Future<String> getData() async {
     var response = await http.get(
-        Uri.encodeFull("http://139.59.127.33//api/v1/infaq/beranda"),
+        Uri.encodeFull("http://139.59.127.33/api/v1/infaq/beranda"),
         headers: {"Accept": "application/json"});
-     setState(() {
+    setState(() {
       places = json.decode(response.body);
     });
-    
+
     return "Success";
   }
-Future<String> getLaporan() async {
+
+  Future<String> getLaporan() async {
     var response = await http.get(
-        Uri.encodeFull("http://139.59.127.33//api/v1/laporan/beranda"),
+        Uri.encodeFull("http://139.59.127.33/api/v1/laporan/beranda"),
         headers: {"Accept": "application/json"});
-     setState(() {
+    setState(() {
       laporan = json.decode(response.body);
     });
-    
+
     return "Success";
   }
+
   @override
   void initState() {
     super.initState();
-     getData();
-     getLaporan();
-   
-
+    getData();
+    getLaporan();
   }
 
   void _expand() {
@@ -79,32 +72,31 @@ Future<String> getLaporan() async {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
 
-      if (places == null) {
+    if (places == null) {
       return Scaffold(
-      appBar: AppBar(
-        title: Text("Welcome To App Donasi"),
-        backgroundColor: Colors.green[300],
-
-      ),
-       body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'loading',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-            ),
+        appBar: AppBar(
+          title: Text("Welcome To App Donasi"),
+          backgroundColor: Colors.green[300],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'loading',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+              SizedBox(height: 24),
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+              ),
+            ],
           ),
-          SizedBox(height: 24),
-          CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-          ),
-        ],
-      ),
-    ),
+        ),
       );
     }
     return Scaffold(
@@ -120,16 +112,14 @@ Future<String> getLaporan() async {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Penerima Manfaat',
-                        style: TextStyle(
-                             fontSize: 16)),
+                    Text('Penerima Manfaat', style: TextStyle(fontSize: 16)),
                     GestureDetector(
                         onTap: _expand, // show list penerima manfaat
                         child: Text(
                           isExpanded ? "Show less" : "Show all",
                           style: TextStyle(
-                              color: Colors.green[200],
-                              ),
+                            color: Colors.green[200],
+                          ),
                         )),
                     //IconButton(icon: isExpanded? Icon(Icons.arrow_drop_up, color: Colors.orange[200],) : Icon(Icons.arrow_drop_down, color: Colors.orange[200],), onPressed: _expand)
                   ],
@@ -143,114 +133,103 @@ Future<String> getLaporan() async {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("Laporan Terbaru",
-                        style: TextStyle(
-                            fontSize: 16)),
+                    Text("Laporan Terbaru", style: TextStyle(fontSize: 16)),
                     GestureDetector(
                         onTap: () {
-                         // Navigator.of(context).pushNamed(TRENDING_UI);
+                          // Navigator.of(context).pushNamed(TRENDING_UI);
                           print('Showing all');
                         },
                         child: Text(
                           'Show all',
                           style: TextStyle(
-                              color: Colors.green[300],
-                             ),
-                        )
-                        )
+                            color: Colors.green[300],
+                          ),
+                        ))
                   ],
                 ),
               ),
-               Container(
-            padding: EdgeInsets.only(top: 10, left: 20),
-            height: 250,
-            width: MediaQuery.of(context).size.width,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              primary: false,
-              itemCount: laporan == null ? 0 : laporan.length,
-              itemBuilder: (BuildContext context, int index) {
+              Container(
+                padding: EdgeInsets.only(top: 10, left: 20),
+                height: 250,
+                width: MediaQuery.of(context).size.width,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  primary: false,
+                  itemCount: laporan == null ? 0 : laporan.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Map place = laporan.reversed.toList()[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: InkWell(
+                        child: Container(
+                          height: 250,
+                          width: 200,
 
-                Map place = laporan.reversed.toList()[index];
-                return Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: InkWell(
-                    
-                    child: Container(
-                      height: 250,
-                      width: 200,
-                      
 //                      color: Colors.green,
-                      child: Column(
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              "http://139.59.127.33//banner/${place["image"]}",
-                              height: 178,
-                              width: 200,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-
-                          SizedBox(height: 5),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "${place["title"]}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                          child: Column(
+                            children: <Widget>[
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  "http://139.59.127.33/banner/${place["image"]}",
+                                  height: 178,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              maxLines: 2,
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-
-                          SizedBox(height: 3),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Pengelola ${place["name"]}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: Colors.green[300],
+                              SizedBox(height: 5),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "${place["title"]}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                  maxLines: 2,
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
-                              maxLines: 1,
-                              textAlign: TextAlign.left,
-                            ),
+                              SizedBox(height: 3),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Pengelola ${place["name"]}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: Colors.green[300],
+                                  ),
+                                  maxLines: 1,
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ],
                           ),
-
-                        ],
-                      ),
-                    ),
-                    onTap: (){
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context){
-                            // return Details();
-                          },
                         ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                // return Details();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
               ////////////end laporan terbaru
               //////// gabung donasi infaq header
               Divider(),
               Container(
                 margin: EdgeInsets.only(left: 30, right: 30, top: 10),
-               
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("Donasi Infaq",
-                        style: TextStyle(
-                             fontSize: 16)),
+                    Text("Donasi Infaq", style: TextStyle(fontSize: 16)),
                     GestureDetector(
                         onTap: () {
                           //Navigator.of(context).pushNamed(DEALS_UI);
@@ -259,23 +238,23 @@ Future<String> getLaporan() async {
                         child: Text(
                           'Show all',
                           style: TextStyle(
-                              color: Colors.green[300],
-                              ),
+                            color: Colors.green[300],
+                          ),
                         ))
                   ],
                 ),
               ),
 ///////////////////////// list donasi infaq
-                      buildVerticalList(),
-
+              buildVerticalList(),
             ],
           ),
         ),
       ),
     );
   }
+
 ////////////////////////////////end donasi infaq
-//////////////////////////// warna & slider 
+//////////////////////////// warna & slider
   Widget _drawer() {
     return Drawer(
       child: Column(
@@ -301,7 +280,10 @@ Future<String> getLaporan() async {
                   backgroundColor: Colors.white,
                 ),
                 title: Text("FlutterDevs"),
-                subtitle: Text("flutterDevs@aeologic.com",style: TextStyle(fontSize: 13),),
+                subtitle: Text(
+                  "flutterDevs@aeologic.com",
+                  style: TextStyle(fontSize: 13),
+                ),
                 trailing: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.black,
@@ -318,11 +300,10 @@ Future<String> getLaporan() async {
     );
   }
 
-
   Widget clipShape() {
     return Stack(
       children: <Widget>[
-          Opacity(
+        Opacity(
           opacity: 0.75,
           child: ClipPath(
             clipper: CustomShapeClipper(),
@@ -364,93 +345,90 @@ Future<String> getLaporan() async {
             ),
           ),
         ),
-         Container(
-                     margin: EdgeInsets.only(left: 30, right: 30, top: _height / 7.75),
-
-           height: 150.0,
-  width: _width,
-        child: Carousel(
-    images: [
-      NetworkImage('https://cdn.iumrah.co.id/img/99.jpg'),
-      NetworkImage('https://cdn.iumrah.co.id/img/78.jpg'),
-      NetworkImage('https://cdn.iumrah.co.id/img/jack.jpg')
-
-    ],
-    dotSize: 4.0,
-    dotSpacing: 15.0,
-    dotColor: Colors.greenAccent,
-    indicatorBgPadding: 5.0,
-    dotBgColor: Colors.white.withOpacity(0.1),
-    borderRadius: true,
-  )
-         ),
+        Container(
+            margin: EdgeInsets.only(left: 30, right: 30, top: _height / 7.75),
+            height: 150.0,
+            width: _width,
+            child: Carousel(
+              images: [
+                NetworkImage('https://cdn.iumrah.co.id/img/99.jpg'),
+                NetworkImage('https://cdn.iumrah.co.id/img/78.jpg'),
+                NetworkImage('https://cdn.iumrah.co.id/img/jack.jpg')
+              ],
+              dotSize: 4.0,
+              dotSpacing: 15.0,
+              dotColor: Colors.greenAccent,
+              indicatorBgPadding: 5.0,
+              dotBgColor: Colors.white.withOpacity(0.1),
+              borderRadius: true,
+            )),
         Container(
           margin: EdgeInsets.only(left: 30, right: 30, top: _height / 2.90),
           child: Material(
             borderRadius: BorderRadius.circular(10.0),
             elevation: 8,
             child: Container(
-          
               padding: EdgeInsets.all(10),
-               child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          children: [
-              Image.asset(
-                      'images/program.png',
-                    height: _height / 15,
-                    width: _width / 15,
-                  ),
-            
-          ],
-        ),
-        Column(
-           
-          children: [
-            // Icon(Icons.kitchen, color: Colors.green[500]),
-            Text('Program Tersedia', style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 13,
-          )),
-          Text('1000', style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15, color: Colors.green.withOpacity(0.6)
-          ), ),
-            
-          ],
-        ),
-        SizedBox(
-                  width: 5,
-                ),
-         Column(
-          children: [
- Image.asset(
-                      'images/donasi.png',
-                    height: _height / 15,
-                    width: _width / 15,
-                  ),           
-          ],
-        ),
-        Column(
-          children: [
-            // Icon(Icons.timer, color: Colors.green[500]),
-            Text('Donasi Terkumpul', style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 13,
-          )),
-          Text('1000', style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15, color: Colors.green.withOpacity(0.6)
-          ), ),
-          ],
-        ),
-      ]
-               ),
-            
-            
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        Image.asset(
+                          'images/program.png',
+                          height: _height / 15,
+                          width: _width / 15,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        // Icon(Icons.kitchen, color: Colors.green[500]),
+                        Text('Program Tersedia',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            )),
+                        Text(
+                          '1000',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.green.withOpacity(0.6)),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Column(
+                      children: [
+                        Image.asset(
+                          'images/donasi.png',
+                          height: _height / 15,
+                          width: _width / 15,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        // Icon(Icons.timer, color: Colors.green[500]),
+                        Text('Donasi Terkumpul',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            )),
+                        Text(
+                          '1000',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.green.withOpacity(0.6)),
+                        ),
+                      ],
+                    ),
+                  ]),
             ),
-            
           ),
         ),
         Container(
@@ -459,7 +437,6 @@ Future<String> getLaporan() async {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-             
                 Flexible(
                   child: Container(
                     height: _height / 20,
@@ -467,13 +444,16 @@ Future<String> getLaporan() async {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        
-                        SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Flexible(
                             child: Text('Amalku',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: _height/40, fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
+                                    color: Colors.white,
+                                    fontSize: _height / 40,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
                                 // overflow: TextOverflow.fade,
                                 softWrap: false)),
                       ],
@@ -483,35 +463,30 @@ Future<String> getLaporan() async {
                 Opacity(
                   opacity: 0.5,
                   child: GestureDetector(
-                    onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return Pilih();
-                // return Register();
-                // return Router();
-                // return LogIn();
-                // return ProfileListItem();
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                               return Pilih();
+//                             return Router();
 
-
-
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Details("${place["id"]}")));
-
-              },
-            ),
-          );
-        },
-                      child: Icon(Icons.account_circle, color: Colors.black,size: _height/30,)),
-                  ),
+                              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Details("${place["id"]}")));
+                            },
+                          ),
+                        );
+                      },
+                      child: Icon(
+                        Icons.account_circle,
+                        color: Colors.black,
+                        size: _height / 30,
+                      )),
+                ),
               ],
             )),
-
-
       ],
     );
   }
 //////////////// end slider & warna atas
-
 
 //////////////////////////// penerima manfaat
   Widget expandList() {
@@ -527,8 +502,8 @@ Future<String> getLaporan() async {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-              //        Navigator.of(context)
-              // .push(MaterialPageRoute(builder: (context) => PaketUmrah()));
+                    //        Navigator.of(context)
+                    // .push(MaterialPageRoute(builder: (context) => PaketUmrah()));
                   },
                   child: Image.asset(
                     'images/ustd.png',
@@ -542,7 +517,7 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Gaji Usatad",
-                    style: TextStyle( fontSize: 11),
+                    style: TextStyle(fontSize: 11),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -552,11 +527,11 @@ Future<String> getLaporan() async {
               children: <Widget>[
                 GestureDetector(
                     onTap: () {
-              //          Navigator.of(context)
-              // .push(MaterialPageRoute(builder: (context) => PaketHaji()));
+                      //          Navigator.of(context)
+                      // .push(MaterialPageRoute(builder: (context) => PaketHaji()));
                     },
                     child: Image.asset(
-                    'images/bs.png',
+                      'images/bs.png',
                       height: _height / 12,
                       width: _width / 12,
                     )),
@@ -576,8 +551,8 @@ Future<String> getLaporan() async {
               children: <Widget>[
                 GestureDetector(
                     onTap: () {
-              //          Navigator.of(context)
-              // .push(MaterialPageRoute(builder: (context) => PaketWisata()));
+                      //          Navigator.of(context)
+                      // .push(MaterialPageRoute(builder: (context) => PaketWisata()));
                     },
                     child: Image.asset(
                       'images/al.png',
@@ -623,12 +598,12 @@ Future<String> getLaporan() async {
             Column(
               children: <Widget>[
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     //Navigator.of(context).pushNamed(CARS_ITEM_LIST);
                     print('Routing to Cars item list');
                   },
                   child: Image.asset(
-                      'images/yat.png',
+                    'images/yat.png',
                     height: _height / 12,
                     width: _width / 12,
                   ),
@@ -639,9 +614,8 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Yatim Piatu",
-                    style: TextStyle( fontSize: 11),
+                    style: TextStyle(fontSize: 11),
                     textAlign: TextAlign.center,
-
                   ),
                 ),
               ],
@@ -649,7 +623,7 @@ Future<String> getLaporan() async {
             Column(
               children: <Widget>[
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     //Navigator.of(context).pushNamed(BIKES_ITEM_LIST);
                     print('Routing to Bikes item list');
                   },
@@ -665,7 +639,7 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Pakir Miskin",
-                    style: TextStyle( fontSize: 11),
+                    style: TextStyle(fontSize: 11),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -674,9 +648,9 @@ Future<String> getLaporan() async {
             Column(
               children: <Widget>[
                 GestureDetector(
-                   onTap: () {
-              //          Navigator.of(context)
-              // .push(MaterialPageRoute(builder: (context) => MyApp()));
+                    onTap: () {
+                      //          Navigator.of(context)
+                      // .push(MaterialPageRoute(builder: (context) => MyApp()));
                     },
                     child: Image.asset(
                       'images/mad.png',
@@ -689,7 +663,7 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Pesantren",
-                    style: TextStyle( fontSize: 13),
+                    style: TextStyle(fontSize: 13),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -698,7 +672,7 @@ Future<String> getLaporan() async {
             Column(
               children: <Widget>[
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     //Navigator.of(context).pushNamed(PETS_ITEM_LIST);
                     print('Routing to Pets item list');
                   },
@@ -792,7 +766,7 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Jobs",
-                    style: TextStyle( fontSize: 13),
+                    style: TextStyle(fontSize: 13),
                   ),
                 ),
               ],
@@ -823,7 +797,7 @@ Future<String> getLaporan() async {
             Column(
               children: <Widget>[
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     //Navigator.of(context).pushNamed(CARS_ITEM_LIST);
                     print('Routing to Cars item list');
                   },
@@ -839,7 +813,7 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Cars",
-                    style: TextStyle( fontSize: 13),
+                    style: TextStyle(fontSize: 13),
                   ),
                 ),
               ],
@@ -847,7 +821,7 @@ Future<String> getLaporan() async {
             Column(
               children: <Widget>[
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     //Navigator.of(context).pushNamed(BIKES_ITEM_LIST);
                     print('Routing to Bikes item list');
                   },
@@ -863,7 +837,7 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Bikes",
-                    style: TextStyle( fontSize: 13),
+                    style: TextStyle(fontSize: 13),
                   ),
                 ),
               ],
@@ -886,7 +860,7 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Mobiles",
-                    style: TextStyle( fontSize: 13),
+                    style: TextStyle(fontSize: 13),
                   ),
                 ),
               ],
@@ -894,7 +868,7 @@ Future<String> getLaporan() async {
             Column(
               children: <Widget>[
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     //Navigator.of(context).pushNamed(PETS_ITEM_LIST);
                     print('Routing to Pets item list');
                   },
@@ -918,7 +892,7 @@ Future<String> getLaporan() async {
             Column(
               children: <Widget>[
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     //Navigator.of(context).pushNamed(FASHION_ITEM_LIST);
                     print('Routing to Fashion item list');
                   },
@@ -934,7 +908,7 @@ Future<String> getLaporan() async {
                 Flexible(
                   child: Text(
                     "Fashion",
-                    style: TextStyle( fontSize: 13),
+                    style: TextStyle(fontSize: 13),
                   ),
                 ),
               ],
@@ -942,15 +916,16 @@ Future<String> getLaporan() async {
           ],
         ),
         crossFadeState:
-        isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
         duration: kThemeAnimationDuration,
       ),
     );
   }
+
 //////////////////////////////////////////////end penerima Manfaat
-buildVerticalList() {
+  buildVerticalList() {
     return Padding(
-                        padding: EdgeInsets.all(7),
+      padding: EdgeInsets.all(7),
       child: ListView.builder(
         primary: false,
         physics: NeverScrollableScrollPhysics(),

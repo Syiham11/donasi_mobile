@@ -12,14 +12,13 @@ import 'package:donasi_mobile/screens/form_infaq.dart';
 
 class Details extends StatefulWidget {
 //  final String recordName;
-  // const Details(this.recordName);
+//   const Details(this.recordName);
 
   @override
   _DetailsState createState() => new _DetailsState();
-  
 }
 
-class _DetailsState extends State<Details> with TickerProviderStateMixin  {
+class _DetailsState extends State<Details> with TickerProviderStateMixin {
   // this will control the button clicks and tab changing
   TabController _controller;
 
@@ -56,7 +55,6 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin  {
     "Donatur",
     "Galery"
     // "Syarat & Ketentuan"
-  
   ];
 
   // active button's foreground color
@@ -66,7 +64,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin  {
   // active button's background color
   Color _backgroundOn = Colors.green[400];
   Color _backgroundOff = Colors.grey[300];
-   // scroll controller for the TabBar
+  // scroll controller for the TabBar
   ScrollController _scrollController = new ScrollController();
 // this will save the keys for each Tab in the Tab Bar, so we can retrieve their position and size for the scroll controller
   List _keys = [];
@@ -74,77 +72,76 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin  {
   // regist if the the button was tapped
   bool _buttonTap = false;
 
-   
-  // List places; 
+  // List places;
   List places;
   List laporans;
   List galerys;
   List donaturs;
   double _height;
   double _width;
-Future<String> getData() async {
+  Future<String> getData() async {
     var response = await http.get(
         // Uri.encodeFull("https://ori.iumrah.co.id/api/mobile/paket/detail/index.php?p1=${widget.recordName}"),
-        Uri.encodeFull("http://139.59.127.33//api/v1/infaq/detail/18"),
-
+        Uri.encodeFull("http://139.59.127.33/api/v1/infaq/detail/18"),
         headers: {"Accept": "application/json"});
-        
-     setState(() {
+
+    setState(() {
       places = json.decode(response.body);
     });
-    
+
     return "Success";
   }
+
   Future<String> getLaporan() async {
     var response = await http.get(
         // Uri.encodeFull("https://ori.iumrah.co.id/api/mobile/paket/detail/index.php?p1=${widget.recordName}"),
-        Uri.encodeFull("http://139.59.127.33//api/v1/infaq/detaillaporan/18"),
-
+        Uri.encodeFull("http://139.59.127.33/api/v1/infaq/detaillaporan/18"),
         headers: {"Accept": "application/json"});
-        
-     setState(() {
+
+    setState(() {
       laporans = json.decode(response.body);
     });
-    
+
     return "Success";
   }
+
   Future<String> getGalery() async {
     var response = await http.get(
         // Uri.encodeFull("https://ori.iumrah.co.id/api/mobile/paket/detail/index.php?p1=${widget.recordName}"),
-        Uri.encodeFull("http://139.59.127.33//api/v1/infaq/listfoto/18"),
-
+        Uri.encodeFull("http://139.59.127.33/api/v1/infaq/listfoto/18"),
         headers: {"Accept": "application/json"});
-        
-     setState(() {
+
+    setState(() {
       galerys = json.decode(response.body);
     });
-    
+
     return "Success";
   }
+
   Future<String> getDonatur() async {
     var response = await http.get(
         // Uri.encodeFull("https://ori.iumrah.co.id/api/mobile/paket/detail/index.php?p1=${widget.recordName}"),
-        Uri.encodeFull("http://139.59.127.33//api/v1/infaq/listdonatur/18"),
-
+        Uri.encodeFull("http://139.59.127.33/api/v1/infaq/listdonatur/18"),
         headers: {"Accept": "application/json"});
-        
-     setState(() {
+
+    setState(() {
       donaturs = json.decode(response.body);
     });
-    
+
     return "Success";
   }
- void initState() {
-   super.initState();
+
+  void initState() {
+    super.initState();
     getData();
     getLaporan();
     getGalery();
     getDonatur();
-     for (int index = 0; index < _icons.length; index++) {
+    for (int index = 0; index < _icons.length; index++) {
       // create a GlobalKey for each Tab
       _keys.add(new GlobalKey());
     }
-     // this creates the controller with 6 tabs (in our case)
+    // this creates the controller with 6 tabs (in our case)
     _controller = TabController(vsync: this, length: _icons.length);
     // this will execute the function every time there's a swipe animation
     _controller.animation.addListener(_handleTabAnimation);
@@ -172,414 +169,381 @@ Future<String> getData() async {
         ColorTween(begin: _foregroundOff, end: _foregroundOn)
             .animate(_animationControllerOn);
   }
-   @override
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-  _height = MediaQuery.of(context).size.height;
-  _width = MediaQuery.of(context).size.width;
-     if (places == null) {
+    _height = MediaQuery.of(context).size.height;
+    _width = MediaQuery.of(context).size.width;
+    if (places == null) {
       return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Paket Umrah"),
-      // ),
-       body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'loading',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-            ),
+        // appBar: AppBar(
+        //   title: Text("Paket Umrah"),
+        // ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'loading',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+              SizedBox(height: 24),
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.green[300]),
+              ),
+            ],
           ),
-          SizedBox(height: 24),
-          CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.green[300]),
-          ),
-        ],
-      ),
-    ),
+        ),
       );
     }
     return Scaffold(
-      
       appBar: AppBar(
-              title: Text("Detail Infaq"),
-backgroundColor: Colors.green[300],
+        title: Text("Detail Infaq"),
+        backgroundColor: Colors.green[300],
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
           ),
           onPressed: () => Navigator.of(context).pop(true),
-
         ),
       ),
- 
       backgroundColor: Colors.white,
-        body: Column(children: <Widget>[
-          // this is the TabBar
-           SizedBox(height: 10),
-          Container(
-            
-            padding: EdgeInsets.only(left: 20),
-            height: 150,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              primary: false,
-              itemCount: places == null ? 0 : places.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map place = places[index];
+      body: Column(children: <Widget>[
+        // this is the TabBar
+        SizedBox(height: 10),
+        Container(
+          padding: EdgeInsets.only(left: 20),
+          height: 150,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            primary: false,
+            itemCount: places == null ? 0 : places.length,
+            itemBuilder: (BuildContext context, int index) {
+              Map place = places[index];
 
-                return Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                     child: Image.network(
-                              "http://139.59.127.33//banner/${place["banner"]}",
-                      height: 150,
-                      width: MediaQuery.of(context).size.width-40,
-                      fit: BoxFit.cover,
-                    ),
+              return Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    "http://139.59.127.33/banner/${place["banner"]}",
+                    height: 150,
+                    width: MediaQuery.of(context).size.width - 40,
+                    fit: BoxFit.cover,
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
+        ),
 
-          SizedBox(height: 20),
-                  Container(
-                     padding: EdgeInsets.only(left: 20),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "${places[0]["title"]}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                      ),
-                      maxLines: 2,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                                 SizedBox(height: 3),
+        SizedBox(height: 20),
+        Container(
+          padding: EdgeInsets.only(left: 20),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "${places[0]["title"]}",
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
+            ),
+            maxLines: 2,
+            textAlign: TextAlign.left,
+          ),
+        ),
+        SizedBox(height: 3),
 
-                  Container(
-                     padding: EdgeInsets.only(left: 20),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Pengelola ${places[0]["name"]}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                        color: Colors.blue[300],
+        Container(
+          padding: EdgeInsets.only(left: 20),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Pengelola ${places[0]["name"]}",
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+              color: Colors.blue[300],
+            ),
+            maxLines: 2,
+            textAlign: TextAlign.left,
+          ),
+        ),
 
-                      ),
-                      maxLines: 2,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                
-                SizedBox(height: 5), 
+        SizedBox(height: 5),
 
-                     Container(
-                     padding: EdgeInsets.only(left: 20),
-                    alignment: Alignment.centerLeft,
-                  child: LinearPercentIndicator(
-                    width: _width / 1.20,
-                    lineHeight: 10.0,
-                    percent: 0.9,
-                    center: Text("Dana Terkumpul 90%", style: TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-            )),
-                    progressColor: Colors.green,
-                  ),
-                     ),
-                 SizedBox(height: 5), 
-                                 Row(
-                                  children: <Widget>[
-                                    SizedBox(height: 10),
-                                     Container(
-                                      padding: EdgeInsets.only(left: 20),
-                                        alignment: Alignment.centerLeft,
-                                      child: 
-  Image.asset(
-                      'images/ustd.png',
-                    height: _height / 20,
-                    width: _width / 20,
-                  ),
-                                     ),
-                                    Container(
-                                      padding: EdgeInsets.only(left: 10),
-                                        alignment: Alignment.centerLeft,
-                                        width: _width / 2.50,
+        Container(
+          padding: EdgeInsets.only(left: 20),
+          alignment: Alignment.centerLeft,
+          child: LinearPercentIndicator(
+            width: _width / 1.20,
+            lineHeight: 10.0,
+            percent: 0.9,
+            center: Text("Dana Terkumpul 90%",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                )),
+            progressColor: Colors.green,
+          ),
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: <Widget>[
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.only(left: 20),
+              alignment: Alignment.centerLeft,
+              child: Image.asset(
+                'images/ustd.png',
+                height: _height / 20,
+                width: _width / 20,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 10),
+              alignment: Alignment.centerLeft,
+              width: _width / 2.50,
+              child: Text(
+                "Donatur ${places[0]["donatur"]}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Colors.black,
+                ),
+                maxLines: 1,
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 20),
+              alignment: Alignment.centerLeft,
+              child: Image.asset(
+                'images/target.png',
+                height: _height / 17,
+                width: _width / 17,
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Target ${places[0]["target"]}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+                maxLines: 1,
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 5),
 
-                                      child: Text(
-                                        "Donatur ${places[0]["donatur"]}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: Colors.black,
-
-                                        ),
-                                        maxLines: 1,
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                     Container(
-                                      padding: EdgeInsets.only(left: 20),
-                                        alignment: Alignment.centerLeft,
-                                      child: 
-Image.asset(
-                      'images/target.png',
-                    height: _height / 17,
-                    width: _width / 17,
-                  ),
-                                     ),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Target ${places[0]["target"]}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                        ),
-                                        maxLines: 1,
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                            SizedBox(height: 5),
-
-
- Container(
-   padding: EdgeInsets.only(left: 20),
-                alignment: Alignment.centerLeft,
-   child: RaisedButton
-   (
-  color: Colors.green,
-  textColor: Colors.white,
-  disabledColor: Colors.grey,
-  disabledTextColor: Colors.black,
-  padding: EdgeInsets.all(8.0),
-  splashColor: Colors.green[300],
-
-  onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => FormDetail()));
-      },
-    elevation: 5.0,
+        Container(
+          padding: EdgeInsets.only(left: 20),
+          alignment: Alignment.centerLeft,
+          child: RaisedButton(
+            color: Colors.green,
+            textColor: Colors.white,
+            disabledColor: Colors.grey,
+            disabledTextColor: Colors.black,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.green[300],
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => FormDetail()));
+            },
+            elevation: 5.0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(10.0)),
-             
             child: new Text('Infaq Sekarang',
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-                 
-   ),
- ),
- 
-              SizedBox(height: 20),
+          ),
+        ),
 
-          Container(
-              height: 49.0,
-              // this generates our tabs buttons
+        SizedBox(height: 20),
+
+        Container(
+            height: 49.0,
+            // this generates our tabs buttons
+            child: ListView.builder(
+                // this gives the TabBar a bounce effect when scrolling farther than it's size
+                physics: BouncingScrollPhysics(),
+                controller: _scrollController,
+                // make the list horizontal
+                scrollDirection: Axis.horizontal,
+                // number of tabs
+                itemCount: _icons.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                      // each button's key
+                      key: _keys[index],
+                      // padding for the buttons
+                      padding: EdgeInsets.all(6.0),
+                      child: ButtonTheme(
+                          child: AnimatedBuilder(
+                        animation: _colorTweenBackgroundOn,
+                        builder: (context, child) => FlatButton(
+                          // get the color of the button's background (dependent of its state)
+                          color: _getBackgroundColor(index),
+                          // make the button a rectangle with round corners
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(7.0)),
+                          onPressed: () {
+                            setState(() {
+                              _buttonTap = true;
+                              // trigger the controller to change between Tab Views
+                              _controller.animateTo(index);
+                              // set the current index
+                              _setCurrentIndex(index);
+                              // scroll to the tapped button (needed if we tap the active button and it's not on its position)
+                              _scrollTo(index);
+                            });
+                          },
+
+                          child: new Center(
+                            child: new Text("${_icons[index]}"),
+                          ),
+                        ),
+                      )));
+                })),
+        Flexible(
+            // this will host our Tab Views
+            child: TabBarView(
+          // and it is controlled by the controller
+
+          controller: _controller,
+          children: <Widget>[
+            // our Tab Views
+            // Icon(_icons[0]),
+            //// tab1
+            Container(
+              height: 10.0,
+              padding: EdgeInsets.only(left: 20),
+              alignment: Alignment.centerLeft,
               child: ListView.builder(
-                  // this gives the TabBar a bounce effect when scrolling farther than it's size
-                  physics: BouncingScrollPhysics(),
-                  controller: _scrollController,
-                  // make the list horizontal
-                  scrollDirection: Axis.horizontal,
-                  // number of tabs
-                  itemCount: _icons.length,
+                  scrollDirection: Axis.vertical,
+                  primary: false,
+                  itemCount: places == null ? 0 : places.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                        // each button's key
-                        key: _keys[index],
-                        // padding for the buttons
-                        padding: EdgeInsets.all(6.0),
-                        child: ButtonTheme(
-                            child: AnimatedBuilder(
-                          animation: _colorTweenBackgroundOn,
-                          builder: (context, child) => FlatButton(
-                              // get the color of the button's background (dependent of its state)
-                              color: _getBackgroundColor(index),
-                              // make the button a rectangle with round corners
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(7.0)),
-                              onPressed: () {
-                                setState(() {
-                                  _buttonTap = true;
-                                  // trigger the controller to change between Tab Views
-                                  _controller.animateTo(index);
-                                  // set the current index
-                                  _setCurrentIndex(index);
-                                  // scroll to the tapped button (needed if we tap the active button and it's not on its position)
-                                  _scrollTo(index);
-                                });
-                              },
-            
-                             child: new Center(
-                    child: new Text("${_icons[index]}"),
-                  ),
-                               ),
-                        )));
-                  })),
-          Flexible(
-              // this will host our Tab Views
-              child: TabBarView(
-            // and it is controlled by the controller
-            
-            controller: _controller,
-            children: <Widget>[
-              // our Tab Views
-              // Icon(_icons[0]),
-              //// tab1
-          Container(
-                 height: 10.0,
-                  padding: EdgeInsets.only(left: 20),
-                alignment: Alignment.centerLeft,
-                
-                 child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              primary: false,
-              itemCount: places == null ? 0 : places.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map place = places[index];
-             
-              return Html(
-              data: "${place["desc"]}",
-              );
-                
-              }
-                ),
-              ),
-              // tab 2
-               Container(
-                 height: 10.0,
-                  padding: EdgeInsets.only(left: 5),
-                alignment: Alignment.centerRight,
-                
-                child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              primary: false,
-              itemCount: laporans == null ? 0 : laporans.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map laporan = laporans[index];
-            return Card(
-  
-   
-                
-              child: Html(
-              data: "<p></p><h3 style='text-align: center;'><center>Pencairan Dana ${laporan["pencairan"]}</center></3><br><p><center><img src='http://139.59.127.33//banner/${laporan["image"]}'><h6>Tanggal Pelaporan ${laporan["created_at"]}</h6><p>${laporan["title"]}</P></center></p>",
-               style: {
+                    Map place = places[index];
 
-           "h3": Style(
-             textAlign: TextAlign.center,
-           ),
-               }
-              ),
-    
-             ); 
-              }
-                ),
-              ),
-              // tab 3
-              Container(
-                 height: 5.0,
-                  padding: EdgeInsets.only(left: 20),
-                alignment: Alignment.centerLeft,
-                 child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              primary: false,
-              itemCount: donaturs == null ? 0 : donaturs.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map donatur = donaturs[index];
-                if(donatur["keterangan"] != null){
+                    return Html(
+                      data: "${place["desc"]}",
+                    );
+                  }),
+            ),
+            // tab 2
+            Container(
+              height: 10.0,
+              padding: EdgeInsets.only(left: 5),
+              alignment: Alignment.centerRight,
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  primary: false,
+                  itemCount: laporans == null ? 0 : laporans.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Map laporan = laporans[index];
                     return Card(
-  shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-      elevation: 1,
-
-       
-              child: Html(
-               
-              data: "<div>${donatur["nama"]} <Strong>Rp. ${donatur["nominal"]}</strong><div><strong>Pesan: </strong><span> ${donatur["keterangan"]}</span></div><h6>Tanggal Donasi ${donatur["created_at"]}</h6></div>",
-              style: {
-
-           "div": Style(
-              margin: EdgeInsets.all(1),
-           ),
-               }
-              ),
-              );
-                }
-                else{
+                      child: Html(
+                          data:
+                              "<p></p><h3 style='text-align: center;'><center>Pencairan Dana ${laporan["pencairan"]}</center></3><br><p><center><img src='http://139.59.127.33/banner/${laporan["image"]}'><h6>Tanggal Pelaporan ${laporan["created_at"]}</h6><p>${laporan["title"]}</P></center></p>",
+                          style: {
+                            "h3": Style(
+                              textAlign: TextAlign.center,
+                            ),
+                          }),
+                    );
+                  }),
+            ),
+            // tab 3
+            Container(
+              height: 5.0,
+              padding: EdgeInsets.only(left: 20),
+              alignment: Alignment.centerLeft,
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  primary: false,
+                  itemCount: donaturs == null ? 0 : donaturs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Map donatur = donaturs[index];
+                    if (donatur["keterangan"] != null) {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        elevation: 1,
+                        child: Html(
+                            data:
+                                "<div>${donatur["nama"]} <Strong>Rp. ${donatur["nominal"]}</strong><div><strong>Pesan: </strong><span> ${donatur["keterangan"]}</span></div><h6>Tanggal Donasi ${donatur["created_at"]}</h6></div>",
+                            style: {
+                              "div": Style(
+                                margin: EdgeInsets.all(1),
+                              ),
+                            }),
+                      );
+                    } else {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        elevation: 1,
+                        child: Html(
+                            data:
+                                "<div>${donatur["nama"]} <Strong>Rp. ${donatur["nominal"]}</strong><div><h6>Tanggal Donasi ${donatur["created_at"]}</h6></div>",
+                            style: {
+                              "div": Style(
+                                margin: EdgeInsets.all(1),
+                              ),
+                            }),
+                      );
+                    }
+                  }),
+            ),
+            // tab 4
+            Container(
+              height: 10.0,
+              padding: EdgeInsets.only(left: 10),
+              alignment: Alignment.centerRight,
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  primary: false,
+                  itemCount: galerys == null ? 0 : galerys.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Map galery = galerys[index];
                     return Card(
-  shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-      elevation: 1,
-
-       
-              child: Html(
-               
-              data: "<div>${donatur["nama"]} <Strong>Rp. ${donatur["nominal"]}</strong><div><h6>Tanggal Donasi ${donatur["created_at"]}</h6></div>",
-              style: {
-
-           "div": Style(
-              margin: EdgeInsets.all(1),
-           ),
-               }
-              ),
-              );
-                }
-            
-              }
-                ),
-              ),
-              // tab 4
-              Container(
-                 height: 10.0,
-                  padding: EdgeInsets.only(left: 10),
-                alignment: Alignment.centerRight,
-                 child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              primary: false,
-              itemCount: galerys == null ? 0 : galerys.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map galery = galerys[index];
-              return Card(
-  shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(15.0),
-    ),
-      elevation: 1,
-              child: Html(
-              data: "<p><img src='http://139.59.127.33//banner/${galery["image"]}' style='width:10px;'></p>",
-              style: {
-
-           "p": Style(
-             textAlign: TextAlign.center,
-           ),
-               }
-              ),
-              );
-              }
-                ),
-              ),
-              
-            ],
-          )),
-        ]),
-
-
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 1,
+                      child: Html(
+                          data:
+                              "<p><img src='http://139.59.127.33/banner/${galery["image"]}' style='width:10px;'></p>",
+                          style: {
+                            "p": Style(
+                              textAlign: TextAlign.center,
+                            ),
+                          }),
+                    );
+                  }),
+            ),
+          ],
+        )),
+      ]),
     );
   }
+
   // runs during the switching tabs animation
   _handleTabAnimation() {
     // gets the value of the animation. For example, if one is between the 1st and the 2nd tab, this value will be 0.5
@@ -643,7 +607,7 @@ Image.asset(
     double size = renderBox.size.width;
     // and position
     double position = renderBox.localToGlobal(Offset.zero).dx;
-    
+
     // this is how much the button is away from the center of the screen and how much we must scroll to get it into place
     double offset = (position + size / 2) - screenWidth / 2;
 

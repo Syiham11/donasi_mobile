@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/material.dart';
 // import 'package:flutter_auth/Screens/Login/login_screen.dart';
-import 'package:donasi_mobile/views/register.dart';
+// import 'package:flutter_auth/Screens/Signup/signup_screen.dart';
 import 'package:donasi_mobile/screens/background.dart';
 import 'package:donasi_mobile/screens/rounded_button.dart';
 // import 'package:donasi_mobile/screens/constants.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:donasi_mobile/main_v2.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -18,13 +17,13 @@ class Body extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Selamat Datang Di Amalku",
+              "WELCOME TO EDU",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.05),
-              Image.asset(
-              "assets/icons/pilih.png",
-              height: size.height * 0.35,
+            SvgPicture.asset(
+              "assets/icons/chat.svg",
+              height: size.height * 0.45,
             ),
             SizedBox(height: size.height * 0.05),
             RoundedButton(
@@ -35,8 +34,6 @@ class Body extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) {
                       // return LoginScreen();
-                                      return Router();
-
                     },
                   ),
                 );
@@ -51,7 +48,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return Register();
+                      // return SignUpScreen();
                     },
                   ),
                 );

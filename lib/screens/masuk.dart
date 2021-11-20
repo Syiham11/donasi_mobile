@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:donasi_mobile/screens/providers/auth.dart';
+import 'package:donasi_mobile/screens/providers/todo.dart';
 
-import 'package:donasi_mobile/providers/auth.dart';
-import 'package:donasi_mobile/providers/todo.dart';
-
-import 'package:donasi_mobile/views/loading.dart';
-import 'package:donasi_mobile/views/login.dart';
-import 'package:donasi_mobile/views/register.dart';
-import 'package:donasi_mobile/views/password_reset.dart';
-import 'package:donasi_mobile/views/todos.dart';
+import 'package:donasi_mobile/screens/views/loading.dart';
+import 'package:donasi_mobile/screens/views/login.dart';
+import 'package:donasi_mobile/screens/views/register.dart';
+import 'package:donasi_mobile/screens/views/password_reset.dart';
+import 'package:donasi_mobile/screens/views/todos.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      builder: (context) => AuthProvider(),
+//       builder: (context) => AuthProvider(),
+      create: (context) => AuthProvider(),
       child: MaterialApp(
         initialRoute: '/',
         routes: {
@@ -42,7 +42,8 @@ class Router extends StatelessWidget {
             return LogIn();
           case Status.Authenticated:
             return ChangeNotifierProvider(
-              builder: (context) => TodoProvider(authProvider),
+              // builder: (context) => TodoProvider(authProvider),
+              create: (context) => TodoProvider(authProvider),
               child: Todos(),
             );
           default:

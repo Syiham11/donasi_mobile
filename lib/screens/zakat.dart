@@ -12,32 +12,25 @@ static const hintColor          = Color(0xFF000000);
 }
 
 class Post {
-  final String tambahan;
-  final int perbulan;
-  final String email;
+  final String userId;
+  final int id;
   final String title;
   final String body;
-  final String notlp;
  
-  Post({this.perbulan, this.tambahan, this.title, this.body, this.email, this.notlp});
+  Post({this.userId, this.id, this.title, this.body});
  
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      perbulan: json['perbulan'],
-      tambahan: json['tambahan'],
+      userId: json['userId'],
+      id: json['id'],
       title: json['title'],
       body: json['body'],
-      email: json['email'],
-      notlp: json['notlp'],
     );
   }
  
   Map toMap() {
     var map = new Map<String, dynamic>();
-    map["perbulan"] = perbulan;
-    map["tambahan"] = tambahan;
-    map["email"] = email;
-    map["notlp"] = notlp;
+    map["userId"] = userId;
     map["title"] = title;
     map["body"] = body;
  
@@ -57,24 +50,17 @@ Future<Post> createPost(String url, {Map body}) async {
 }
 class MyApp extends StatelessWidget {
   final Future<Post> post;
-   double firstFieldValue = 0;
-  double secondFieldValue = 0;
-  double thirdFieldValue = 0;
-
+ 
   MyApp({Key key, this.post});
   static final CREATE_POST_URL = 'https://ori.iumrah.co.id/api/mobile/cek_jamaah/index.php';
   TextEditingController titleControler = new TextEditingController();
   TextEditingController bodyControler = new TextEditingController();
-  TextEditingController perbulanControler = new TextEditingController();
-  TextEditingController tambahanControler = new TextEditingController();
-  TextEditingController emailControler = new TextEditingController();
-  TextEditingController notlpControler = new TextEditingController();
  
  
 
   @override
   Widget build(BuildContext context) {
-    // print(perbulanControler+tambahanControler);
+    
     return Scaffold(
       body: Container(
         // color: ColorPalette.primaryColor,
@@ -140,8 +126,7 @@ class MyApp extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.0),
         ),
         TextFormField(
-           controller: perbulanControler,
-           
+           controller: titleControler,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             enabledBorder: UnderlineInputBorder(
@@ -152,40 +137,14 @@ class MyApp extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "Pendapatan Perbulan",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
-            
           ),
-          style: TextStyle(color: Colors.black),
-          autofocus: false,
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10.0),
-        ),
-        TextFormField(
-           controller: tambahanControler,
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: ColorPalette.underlineTextField, 
-                width: 1.5,
-              ),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 3.0,
-              ),
-            ),
-            hintText: "Pendapatan Tambahan (Jika Ada)",
-            hintStyle: TextStyle(color: ColorPalette.hintColor),
-          ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           autofocus: false,
         ),
         Padding(
@@ -203,14 +162,39 @@ class MyApp extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
+                width: 3.0,
+              ),
+            ),
+            hintText: "Pendapatan Tambahan (Jika Ada)",
+            hintStyle: TextStyle(color: ColorPalette.hintColor),
+          ),
+          style: TextStyle(color: Colors.white),
+          autofocus: false,
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 10.0),
+        ),
+        TextFormField(
+           controller: titleControler,
+          decoration: const InputDecoration(
+            border: UnderlineInputBorder(),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: ColorPalette.underlineTextField, 
+                width: 1.5,
+              ),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "Jumlah zakat",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           autofocus: false,
         ),
         
@@ -229,14 +213,14 @@ class MyApp extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "Pezakat/muzaki",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           // obscureText: true,
           autofocus: false,
         ),
@@ -244,7 +228,7 @@ class MyApp extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.0),
         ),
         TextFormField(
-           controller: emailControler,
+           controller: bodyControler,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             enabledBorder: UnderlineInputBorder(
@@ -255,14 +239,14 @@ class MyApp extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "Email Pezakat",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           // obscureText: true,
           autofocus: false,
         ),
@@ -270,7 +254,7 @@ class MyApp extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.0),
         ),
         TextFormField(
-           controller: notlpControler,
+           controller: bodyControler,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             enabledBorder: UnderlineInputBorder(
@@ -281,14 +265,14 @@ class MyApp extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
                 width: 3.0,
               ),
             ),
             hintText: "No.Telepon Pezakat",
             hintStyle: TextStyle(color: ColorPalette.hintColor),
           ),
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
           // obscureText: true,
           autofocus: false,
         ),
@@ -303,7 +287,36 @@ class MyApp extends StatelessWidget {
           padding: EdgeInsets.only(top: 16.0),
         ),
         InkWell(
-          onTap: () async {},
+          onTap: () async {
+                    Post newPost = new Post(
+                        userId: "123", id: 0, title: titleControler.text, body: bodyControler.text);
+                    Post p = await createPost(CREATE_POST_URL,
+                        body: newPost.toMap());
+                    // print(p.title);
+                    if(p.title != 'null'){
+// Navigator.of(context).push(MaterialPageRoute(builder: (context) => Jamaah("${p.title}")));
+                    }else{
+                      print('gagal');
+                 Alert(
+      context: context,
+      type: AlertType.error,
+      title: "Mohon Maaf",
+      desc: "Jamaah Tidak Dapat Ditemukan, Mohon Cek Kembali ID Jamaah Serta Tanggal Lahir Anda",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
+                    }
+            
+
+                  },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 8.0),
             width: double.infinity,

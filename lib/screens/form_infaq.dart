@@ -52,7 +52,7 @@ class FormDetail extends StatelessWidget {
   final Future<Post> post;
  
   FormDetail({Key key, this.post});
-  static final CREATE_POST_URL = 'https://ori.iumrah.co.id/api/mobile/cek_jamaah/index.php';
+  static final CREATE_POST_URL = '';
   TextEditingController titleControler = new TextEditingController();
   TextEditingController bodyControler = new TextEditingController();
  
